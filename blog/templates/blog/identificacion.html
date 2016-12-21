@@ -1,0 +1,22 @@
+{% if request.user.is_authenticated %}
+	<form  role="form" action="{% url 'cerrar_sesion' %}" class = "navbar-form navbar-right" method="post">
+		
+		<div class="form-group">  
+		    <p>{{ request.user.first_name}} {{ request.user.last_name }}</p>
+		</div>
+	  {% csrf_token %}
+	  <button type="submit" class="btn btn-default">Cerrar sesión</button>
+	</form>
+
+{% else %}
+	<form  role="form" action="{% url 'inicio_sesion' %}" class = "navbar-form navbar-right" method="post">
+		<div class="form-group">
+		    <input type="text" placeholder="Usuario"  name="username" class="form-control" id="uLogin">
+		</div>
+		<div class="form-group">  
+		    <input type="password" placeholder="Contraseña"  name="password" id="uPassword" class="form-control">
+		</div>
+	  {% csrf_token %}
+	  <button type="submit" class="btn btn-default">Iniciar sesión</button>
+	</form>
+{% endif %}

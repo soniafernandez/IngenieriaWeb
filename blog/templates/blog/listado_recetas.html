@@ -1,0 +1,18 @@
+{% extends 'blog/base.html' %}
+{% block cabecera %}
+	<div class="jumbotron">	
+		<div class = "container" >
+			<h2>Listado de recetas</h2>
+		</div>
+	</div>
+
+{% endblock %}
+{% block content %}
+	{% for receta in lista_recetas %}
+	<div class="col-md-4">
+		<h2>{{ receta.nombre }}</h2>
+		<img src="{{ receta.foto.url }}">
+		<p><a class="btn btn-default" href="{% url 'receta_detalle' pk=receta.pk %}" role="button">Ver más &raquo;</a></p>
+	</div>       
+	{% endfor %}
+{% endblock%}

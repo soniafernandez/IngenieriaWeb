@@ -1,0 +1,32 @@
+{% extends 'blog/base.html' %}
+
+{% block titulo%} {{ receta.nombre}} {% endblock%}
+
+{% block content%}
+	<article class = "receta">
+	
+		<div class="imagen">
+			<img src="{{ receta.foto.url }}">
+		</div>
+		{% if user.is_authenticated and user.is_superuser %}
+			<a class="btn btn-default" href="{% url 'editar_receta' pk=receta.pk %}">Editar receta   <span class="glyphicon glyphicon-pencil"></span></a>
+		{% endif %}
+		<section id="introduccion">
+			<header><h2>&iquest;Sab&iacute;as que...?</h2></header>
+			{{ receta.sabias_que}}
+		</section>
+		<section id="ingredientes">
+			<header><h2>Ingredientes</h2></header>
+			{% for ingrediente in receta.ingredientes.all%}
+				<p>{{ ingrediente.cantidad }}
+				{{ ingrediente.unidad }}
+				{{ ingrediente.alimento.nombre }}</p>
+			{% endfor %}
+		</section>
+		<section id="pasos">
+			<header><h2>Pasos a seguir</h2></header>
+			{{ receta.pasos}}
+		</section>
+				
+	</article>
+{% endblock %}

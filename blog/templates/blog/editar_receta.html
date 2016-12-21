@@ -1,0 +1,120 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+	
+    <form method="POST" class="form-horizontal" id = "form-receta" enctype='multipart/form-data' >
+    	{% csrf_token %}
+    	<div class="control-group secciones">
+	    	<label class="control-label" for="{{formulario.nombre.id_for_label}}">{{ formulario.nombre.label }}</label>
+	    	
+	    	<div class="controls">
+		    	{{ formulario.nombre }}
+		    </div>
+			
+	    </div>
+	    <div class="control-group secciones">
+	    	<label class="control-label" for="{{formulario.foto.id_for_label}}">{{ formulario.foto.label }}</label>
+			<div class="controls">
+				{{ formulario.foto }}
+			</div>
+	    </div>
+	     <div class="control-group secciones">
+	    	<label class="control-label" for="{{formulario.foto.id_for_label}}">{{ formulario.sabias_que.label }}</label>
+			<div class="controls">
+				{{ formulario.sabias_que }}
+			</div>
+	    </div>
+	    <div class="control-group secciones ">
+	    	<label class="control-label" for="{{formulario.pasos.id_for_label}}">{{ formulario.pasos.label }}</label>
+			<div class="controls">
+				{{ formulario.pasos }}
+			</div>
+	    </div>
+	    <div class="control-group secciones">
+	    	<label class="control-label" for="{{formulario.autor.id_for_label}}">{{ formulario.autor.label }}</label>
+			<div class="controls">
+				{{ formulario.autor }}
+			</div>
+	    </div>
+	    <div class="control-group secciones">
+	    	<label class="control-label" >Ingredientes</label>
+			<div class="controls">
+
+				{{ formset.management_form }}
+				<table class="table" >
+		 			<thead>
+			 			<tr>
+			 				<th> Cantidad </th>
+			 				<th> Unidad de medida</th>
+			 				<th> Alimento </th>
+			 			</tr>
+		 			</thead>
+		 			<tbody>
+		 				
+					{% for form in formset %}
+					 {% for hidden in form.hidden_fields %}
+		        		{{ hidden }}
+		    		{% endfor %}    
+					<tr>
+						<td> {{ form.cantidad }} </td>
+						<td> {{ form.unidad }} </td>
+						<td> {{ form.alimento }} </td>
+						{% if formset.can_delete %}
+			                <td>{{ form.DELETE }}Eliminar </td>
+			            {% endif %}
+					</tr>
+					
+					{% endfor %}
+
+		 			</tbody>
+	 			
+		 		</table>
+	 			<input type="button" value="Añadir nuevo ingrediente" id="add_more">
+	 		</div>
+	    </div>
+        
+ 		
+
+ 
+		<script>
+		    $('#add_more').click(function() {
+		        cloneMore('.table tr:last', 'ingrediente');
+		    });
+		</script>
+
+		<script >
+			function setTextareaHeight(textareas) {
+			    textareas.each(function () {
+			        var textarea = $(this);
+			 
+			        if ( !textarea.hasClass('autoHeightDone') ) {
+			            textarea.addClass('autoHeightDone');
+			 
+			            var extraHeight = parseInt(textarea.css('padding-top')) + parseInt(textarea.css('padding-bottom')), // to set total height - padding size
+			                h = textarea[0].scrollHeight - extraHeight;
+			 
+			            // init height
+			            textarea.height('auto').height(h);
+			 
+			            textarea.bind('keyup', function() {
+			 
+			                textarea.removeAttr('style'); // no funciona el height auto
+			 
+			                h = textarea.get(0).scrollHeight - extraHeight;
+			 
+			                textarea.height(h+'px'); // set new height
+			            });
+			        }
+			    })
+			}
+		</script>
+
+		<script type="text/javascript">
+			$(function(){
+			  setTextareaHeight($('textarea'));
+			})
+		</script>
+ 		
+        <button type="submit" class="save btn btn-default">Guardar</button>
+    </form>
+{% endblock %}
